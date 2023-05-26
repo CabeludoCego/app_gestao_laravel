@@ -1,0 +1,145 @@
+<h3>Fornecedor</h3>
+
+<h5>Teste de diversas funções do front end do php (blade) usando a view de fornecedor provisória.</h5>
+{{ 'texto 1' }}
+
+<br>
+
+<?= 'texto 2' ?>
+
+<br>
+
+{{-- texto comentado --}}
+
+@php
+
+	// comentário php
+	echo 'Texto 3!';
+	/* 
+	comentário entre linhas
+	*/
+
+@endphp
+
+<br>
+
+{{-- @dd($fornecedores) --}}
+
+{{-- IF-ELSE --}}
+
+{{-- @if(@isset($fornecedores)) --}}
+
+
+{{-- ISSET: Se a variável existe. JÁ É UM IF. --}}
+@isset($fornecedores)
+	@if(count($fornecedores) > 0 && count($fornecedores) < 10)
+		<h3>Existem poucos fornecedores!</h3>
+	@elseif(count($fornecedores) == 0)
+		<h3>Sem fornecedores.</h3>
+	@else
+		<h3>Tem mais de 10 fornecedores!</h3>
+	@endif
+
+	<p>
+		CNPJ: {{ $fornecedores[1]['cnpj'] ?? 'Nao informado' }}  
+		{{-- 
+			VALOR DEFAULT (ACIMA) /\
+			Se $variavel for nula ou não definida, atribui valor.	
+		--}}
+	</p>
+@endisset
+
+{{-- @endif --}}
+
+
+{{-- UNLESS: IF invertido. IF executa True, Unless executa false --}}
+
+@if($fornecedores[2]['status'] == 'ativo')  {{-- //  SE for true--}}
+	<p> Fornecedor ativo </p>
+@else
+  <p>Fornecedor inativo </p>
+@endif
+
+
+@unless($fornecedores[2]['status'] == 'ativo')  {{-- //  SE for false --}}
+  <p> Fornecedor inativo </p>
+@else
+	<p> Fornecedor ativo </p>
+@endunless
+
+{{-- @isset --}}
+{{-- @empty --}}
+
+{{-- operador ternário --}}
+{{-- valor default --}}
+
+{{-- switch/case --}}
+
+@isset($fornecedores)
+
+	@switch($fornecedores[2]['ddd'])
+		@case (11)
+			<p>São Paulo - SP</p>
+			@break
+		@case (12)
+			<p>Rio de Janeiro - RJ</p>
+			@break
+		@case (86)
+			<p>The</p>
+			@break
+		@default
+			<p>Estado não encontrado.</p>
+
+	@endswitch
+
+@endisset
+
+{{-- FOR --}}
+
+@for($i = 1; isset($fornecedores[$i-1]); $i++)
+@endfor
+<p>Total for: {{ $i }} fornecedores.</p>
+
+{{-- WHILE - Requer criação do contador dessa forma. --}}
+
+@php $i = 1 @endphp
+@while(isset($fornecedores[$i-1]))
+	
+	@php $i++ @endphp
+
+@endwhile
+<p>Total while: {{ $i }} fornecedores.</p>
+
+{{-- FOR EACH --}}
+
+@foreach ($fornecedores as $indice => $fornecedor)
+	@if($loop->first)
+	<p>Começou!</p>
+	@endif
+
+	Iteração: {{ $loop->iteration }} , {{ $fornecedor['nome'] }} <br>
+	{{-- {{ $indice }}		 --}}
+	
+	@if($loop->last)
+		<p>Acabou!</p>
+	@endif
+@endforeach
+
+{{-- FOR ELSE! Se houver itens, percorre com for. Senão, segue. --}}
+{{-- @php
+$fornecedores = []
+@endphp
+
+@forelse ($fornecedores as $indice => $fornecedor)
+	{{ $fornecedor['nome'] }} <br>
+
+	@empty
+		<p> Sem fornecedores. </p>
+
+@endforelse --}}
+
+{{-- Escapar impressão do blade --}}
+
+<p> {{ $fornecedores[2]['nome'] }}</p>
+
+<p> @{{ $fornecedores[2]['nome'] }}</p>

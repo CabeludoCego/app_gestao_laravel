@@ -1,0 +1,25 @@
+        // no primeiro return, sai do middleware.
+        echo $metodo_autenticacao.' - '.$perfil.'<br>';
+
+        if($metodo_autenticacao == 'padrao'){
+            echo 'Verificação no banco de dados. '.$perfil.'<br>';
+        } elseif($metodo_autenticacao == 'ldap'){
+            echo 'Verificação no AD. '.$perfil.'<br>';
+        } else {
+            echo 'Erro 404';
+        }
+
+        
+        if($perfil == 'visitante'){
+            echo 'Acesso limitado! <br>';
+        } else {
+            echo 'Carregar usuário da database...';
+        }
+
+        if(true) {
+            return $next($request);
+        }
+        else {
+            return Response('Acesso negado! Rota exige autenticação.');
+        }     
+        // return $next($request);

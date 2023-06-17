@@ -12,7 +12,7 @@
 
         <div class="menu">
             <ul>
-                <li><a href="{{ route('produto.index') }}">Novo</a></li>
+                <li><a href="{{ route('produto.create') }}">Novo</a></li>
                 <li><a href="{{ route('produto.index') }}">Consulta</a></li>
             </ul>
         </div>
@@ -26,26 +26,46 @@
                             <th>Descrição</th>
                             <th>Peso</th>
                             <th>Unidade ID</th>
+                            <th>Comprimento</th>
+                            <th>Largura</th>
+                            <th>Altura</th>
+                            <th></th>
                             <th></th>
                             <th></th>
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach($fornecedores as $fornecedor)
+                        @foreach($produtos as $produto)
                             <tr>
                                 <td>{{ $produto->nome }}</td>
                                 <td>{{ $produto->descricao }}</td>
                                 <td>{{ $produto->peso }}</td>
                                 <td>{{ $produto->unidade_id }}</td>
+                                <td>{{ $produto->produtoDetalhe->comprimento ?? '' }}</td>
+                                <td>{{ $produto->produtoDetalhe->largura ?? '' }}</td>
+                                <td>{{ $produto->produtoDetalhe->altura ?? '' }}</td>
+                                {{-- <td>{{ $produto->altura ?? '' }}</td> --}}
                                 <td>
-                                    {{-- <a href="{{ route('app.produto.editar', $produto->id) }}"> --}}
-                                        Editar
-                                    {{-- </a> --}}
+                                    <a href="{{ route('produto.show', ['produto' => $produto->id]) }}">
+                                        Visualizar
+                                    </a>
                                 </td>
                                 <td>
-                                    {{-- <a href="{{ route('app.produto.excluir', $produto->id) }}"> --}}
-                                        Excluir
-                                    {{-- </a> --}}
+                                    <a href="{{ route('produto.edit', ['produto' => $produto->id]) }}">
+                                        Editar
+                                    </a>
+                                </td>
+                                <td>
+                                    <form id="formDel_{{ $produto->id }}" method="post" action="{{ route('produto.destroy', ['produto' => $produto->id]) }}">
+                                        @method('DELETE')
+                                        @csrf
+
+                                        {{-- <button type="submit">Excluir</button>
+                                         --}}
+                                         <a href="#" onclick="document.getElementById('formDel_{{ $produto->id }}').submit()">
+                                            Excluir
+                                        </a>
+                                    </form>
                                 </td>
                             </tr>
                         @endforeach
@@ -62,7 +82,7 @@
                 Registros {{ $fornecedores->firstItem() }} a {{ $fornecedores->lastItem() }} --}}
 
                 <br>
-                Exibindo {{ $produtos->count() }} produtos de {{ $produtos->firstItem() }} a {{ $produtos->lastItem() }}
+                {{-- Exibindo {{ $produtos->count() }} produtos de {{ $produtos->firstItem() }} a {{ $produtos->lastItem() }} --}}
 
             </div>
         </div>

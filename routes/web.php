@@ -6,6 +6,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\PrincipalController;
 use App\Http\Controllers\ProdutoController;
+use App\Http\Controllers\ProdutoDetalheController;
 use App\Http\Controllers\QuemSomosController;
 use App\Http\Controllers\TesteController;
 use App\Http\Middleware\LogAcessoMiddleware;
@@ -51,7 +52,7 @@ Route::middleware('autenticacao:padrao,visitante')->prefix('/app')->group(functi
     Route::get('/sair',       [LoginController::class, 'sair'])->name('app.sair');
     Route::get('/cliente',    [ClienteController::class, 'index'])->name('app.cliente');
 
-    
+
     Route::get('/fornecedor', [FornecedorController::class, 'index'])->name('app.fornecedor');
     Route::get('/fornecedor/listar/', [FornecedorController::class, 'listar'])->name('app.fornecedor.listar');
     Route::post('/fornecedor/listar/', [FornecedorController::class, 'listar'])->name('app.fornecedor.listar');
@@ -61,10 +62,11 @@ Route::middleware('autenticacao:padrao,visitante')->prefix('/app')->group(functi
     Route::get('/fornecedor/excluir/{id}/{msg?}', [FornecedorController::class, 'excluir'])->name('app.fornecedor.excluir');
 
 
-    Route::get('/produto',    [ProdutoController::class, 'index'])->name('app.produto');
+    // Route::get('/produto',    [ProdutoController::class, 'index'])->name('app.produto');
     Route::resource('produto', ProdutoController::class);
 
-
+    // produto detalhes
+    Route::resource('produto-detalhe', ProdutoDetalheController::class);
 });
 
 Route::get('/rota1', function() {echo 'Rota 1';} )->name('site.rota1');

@@ -20,6 +20,12 @@
 
         <div class="informacao-pagina">
             {{ $msg ?? '' }}
+
+            <h4>Produto</h4>
+
+            <div>{{ $produto_detalhe->item->nome }} - {{ $produto_detalhe->item->descricao }}</div>
+
+            <h4>Detalhes</h4>
             <div style="width:30%; margin-left: auto; margin-right: auto;">
                 @component('app.produto_detalhe._components.form_create_edit', ['produto_detalhe' => $produto_detalhe, 'unidades' => $unidades])
 

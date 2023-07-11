@@ -14,7 +14,7 @@ class FornecedorController extends Controller
 
     public function listar(Request $request){
 
-        $fornecedores = Fornecedor::where('nome', 'like', '%'.$request->input('nome').'%')
+        $fornecedores = Fornecedor::with(['produtos'])->where('nome', 'like', '%'.$request->input('nome').'%')
             ->where('site', 'like', '%'.$request->input('site').'%')
             ->where('uf', 'like', '%'.$request->input('uf').'%')
             ->where('email', 'like', '%'.$request->input('email').'%')
@@ -27,7 +27,7 @@ class FornecedorController extends Controller
     public function adicionar(Request $request){
 
         $msg = '';
-        
+
         // Inclusão de elemento, verifica csrf token
         if($request->input('_token') != '' && $request->input('id') == ''){
 
@@ -53,10 +53,7 @@ class FornecedorController extends Controller
             $fornecedor->create($request->all());
 
             $msg = 'Cadastro realizado com sucesso';
-
-
         }
-
 
         // Edição de elemento
         if($request->input('_token') != '' && $request->input('id') != ''){
@@ -82,7 +79,6 @@ class FornecedorController extends Controller
     }
 
     public function excluir($id) {
-
 
         Fornecedor::find($id)->delete();      // registro permanece na db
         // Fornecedor::find($id)->forceDelete(); // apaga da db

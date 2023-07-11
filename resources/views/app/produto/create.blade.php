@@ -17,15 +17,15 @@
 
         <div class="menu">
             <ul>
-                <li href="{{ route('produto.index') }}">Voltar</li>
-                <li>Consulta</li>
+                <li><a href="{{ route('produto.create') }}">Novo</a></li>
+                <li><a href="{{ route('produto.index') }}">Consulta</a></li>
             </ul>
         </div>
 
         <div class="informacao-pagina">
             {{ $msg ?? '' }}
             <div style="width:30%; margin-left: auto; margin-right: auto;">
-                @component('app.produto._components.form_create_edit', ['unidades' => $unidades])
+                @component('app.produto._components.form_create_edit', ['unidades' => $unidades, 'fornecedores' => $fornecedores])
 
                 @endcomponent
             </div>

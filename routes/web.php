@@ -4,6 +4,8 @@ use App\Http\Controllers\ClienteController;
 use App\Http\Controllers\FornecedorController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\PedidoController;
+use App\Http\Controllers\PedidoProdutoController;
 use App\Http\Controllers\PrincipalController;
 use App\Http\Controllers\ProdutoController;
 use App\Http\Controllers\ProdutoDetalheController;
@@ -11,19 +13,6 @@ use App\Http\Controllers\QuemSomosController;
 use App\Http\Controllers\TesteController;
 use App\Http\Middleware\LogAcessoMiddleware;
 use Illuminate\Support\Facades\Route;
-
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "web" middleware group. Make something great!
-|
-*/
-
-// /, /contato, /quem-somos
 
 // Route::get('/', function () {
 //     // return view('welcome');
@@ -43,8 +32,6 @@ Route::post('/contato', [\App\Http\Controllers\ContatoController::class, 'salvar
 
 $uri1 = '/quem-somos'; $callback3 = [QuemSomosController::class,'quemSomos'];
 Route::get($uri1, $callback3)->name('site.quem-somos');
-
-
 
 
 Route::middleware('autenticacao:padrao,visitante')->prefix('/app')->group(function() {
@@ -67,6 +54,15 @@ Route::middleware('autenticacao:padrao,visitante')->prefix('/app')->group(functi
 
     // produto detalhes
     Route::resource('produto-detalhe', ProdutoDetalheController::class);
+
+    Route::resource('cliente', ClienteController::class);
+    Route::resource('pedido', PedidoController::class);
+    // Route::resource('pedido-produto', PedidoProdutoController::class);
+
+    Route::get('/pedido-produto/create/{pedido}', [PedidoProdutoController::class, 'create'])->name('pedido-produto.create');
+    Route::post('/pedido-produto/store/{pedido}', [PedidoProdutoController::class, 'store'])->name('pedido-produto.store');
+    Route::delete('/pedido-produto/destroy/{pedidoProduto}/{pedido_id}', [PedidoProdutoController::class, 'destroy'])->name('pedido-produto.destroy');
+
 });
 
 Route::get('/rota1', function() {echo 'Rota 1';} )->name('site.rota1');
@@ -99,18 +95,18 @@ Route::get('/teste/{p1}/{p2}', [TesteController::class, 'teste'])->name('site.te
 
 // AULAS: ROTAS E PARÂMETROS
 
-$callback4 = function (
-    string $nome, string $categoria, string $assunto = '_', string $mensagem = 'vazio') {
-    echo 'Fala comigo, ' .$nome .', me diz cadê você. <br>';
-    echo "Para falar de $categoria, a respeito de $assunto, quero dizer que $mensagem." ;
-};
+// $callback4 = function (
+//     string $nome, string $categoria, string $assunto = '_', string $mensagem = 'vazio') {
+//     echo 'Fala comigo, ' .$nome .', me diz cadê você. <br>';
+//     echo "Para falar de $categoria, a respeito de $assunto, quero dizer que $mensagem." ;
+// };
 
-Route::get('/contato/{nome}/{categoria}/{assunto?}/{mensagem?}', $callback4);
+// Route::get('/contato/{nome}/{categoria}/{assunto?}/{mensagem?}', $callback4);
 
-Route::get('/contato2/{nome}/{categoria_id?}', function (
-        string $nome = 'Unknown',
-        int $categoria_id = 1
-    ) {
-        echo "User $nome, ID $categoria_id";
-    }
-)->where('categoria_id', '[0-9]+')->where('nome', '[A-Za-z]+');
+// Route::get('/contato2/{nome}/{categoria_id?}', function (
+//         string $nome = 'Unknown',
+//         int $categoria_id = 1
+//     ) {
+//         echo "User $nome, ID $categoria_id";
+//     }
+// )->where('categoria_id', '[0-9]+')->where('nome', '[A-Za-z]+');

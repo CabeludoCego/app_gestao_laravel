@@ -14,4 +14,10 @@ class Fornecedor extends Model
     protected $fillable = ['nome', 'site', 'uf', 'email'];
 
     // protected $dates = ['deleted_at'];
+
+    public function produtos() {
+        // return this->hasMany(Item::class, 'foreign_key', 'id');
+
+        return $this->hasMany(Item::class, 'fornecedor_id', 'id');
+    }
 }
